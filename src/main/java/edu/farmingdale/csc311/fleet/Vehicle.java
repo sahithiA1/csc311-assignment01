@@ -85,7 +85,7 @@ public abstract class Vehicle implements Honkable {
         setWheels(wheels);
         this.engineSize = engineSize;
         this.fuelType = fuelType;
-       setFuelCapacity(fuelCapacity);
+        setFuelCapacity(fuelCapacity);
     }
 
     private static String checkText(String field, String value) {
@@ -194,7 +194,9 @@ public abstract class Vehicle implements Honkable {
         }
     }
 
-    /** Subclasses answer these two. Do not write bodies here. */
+    /**
+     * Subclasses answer these two. Do not write bodies here.
+     */
     public abstract String category();
 
     public abstract double rangeInMiles();
@@ -218,16 +220,37 @@ public abstract class Vehicle implements Honkable {
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("TODO-05");
+        String engineText;
+
+        if (fuelType.hasEngine()) {
+            engineText = String.format("%.1fL", engineSize);
+        } else {
+            engineText = "n/a";
+        }
+
+        return String.format(
+                "%d %s %s [VIN=%s] color=%s, wheels=%d, engine=%s, fuel=%s, capacity=%.1f %s",
+                year, make, model, vin, color, wheels,
+                engineText, fuelType.getLabel(), fuelCapacity, fuelType.getUnit()
+        );
     }
 
     @Override
     public boolean equals(Object other) {
-        throw new UnsupportedOperationException("TODO-05");
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Vehicle)) {
+            return false;
+        }
+
+        Vehicle vehicle = (Vehicle) other;
+        return vin.equals(vehicle.vin);
     }
 
     @Override
     public int hashCode() {
-        throw new UnsupportedOperationException("TODO-05");
+        return vin.hashCode();
     }
 }
